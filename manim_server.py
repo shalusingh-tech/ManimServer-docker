@@ -34,18 +34,15 @@ def execute_manim_code(manim_code: str) -> str:
         Success message with video location, or error details if execution failed.
         Generated videos are stored in /app/media/manim_tmp/ directory.
     """
-    # tmpdir = tempfile.mkdtemp()  # Creates a temp directory that won't be deleted immediately
     tmpdir = os.path.join(BASE_DIR, "manim_tmp")  
-    os.makedirs(tmpdir, exist_ok=True)  # Ensure the temp folder exists
+    os.makedirs(tmpdir, exist_ok=True)
     script_path = os.path.join(tmpdir, "scene.py")
     
     try:
         # Strip markdown code block markers if present
         code = manim_code.strip()
         if code.startswith("```python") or code.startswith("```"):
-            # Remove opening ```python or ```
             code = code.split('\n', 1)[1] if '\n' in code else code
-            # Remove closing ```
             if code.endswith("```"):
                 code = code.rsplit("```", 1)[0]
         
@@ -55,9 +52,9 @@ def execute_manim_code(manim_code: str) -> str:
         with open(script_path, "w") as script_file:
             script_file.write(code)
         
-        # Execute Manim with the correct path
+        # Execute Manim
         result = subprocess.run(
-            [MANIM_EXECUTABLE, "-p", script_path], #MANIM_PATH "/Users/[Your_username]/anaconda3/envs/manim2/Scripts/manim.exe"
+            [MANIM_EXECUTABLE, "-p", script_path],
             capture_output=True,
             text=True,
             cwd=tmpdir
@@ -65,11 +62,9 @@ def execute_manim_code(manim_code: str) -> str:
 
         if result.returncode == 0:
             TEMP_DIRS[tmpdir] = True
-            print(f"Check the generated video at: {tmpdir}")
-
-            return "Execution successful. Video generated."
+            return f"Execution successful. Video generated at: {tmpdir}\nOutput: {result.stdout}"
         else:
-            return f"Execution failed: {result.stderr}"
+            return f"Execution failed.\nError: {result.stderr}\nOutput: {result.stdout}"
 
     except Exception as e:
         return f"Error during execution: {str(e)}"

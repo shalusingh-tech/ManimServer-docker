@@ -24,9 +24,6 @@ COPY manim_server.py .
 # Create media directory for Manim output
 RUN mkdir -p /app/media /app/media/manim_tmp
 
-# Declare volume mount point for persistent storage
-VOLUME ["/app/media"]
-
 # Ensure unbuffered output for stdio
 ENV PYTHONUNBUFFERED=1
 
