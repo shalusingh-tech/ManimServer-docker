@@ -19,8 +19,8 @@ RUN apt-get update && apt-get install -y \
     dvisvgm \
     latexmk \
     # ---- OpenGL system libs (for GPU renderer) ----
-    libgl1-mesa-glx \
-    libgl1-mesa-dev \
+    libgl1 \
+    libgl-dev \
     libglu1-mesa \
     libglu1-mesa-dev \
     freeglut3-dev \
