@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 COPY requirement.txt .
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirement.txt
+RUN pip install --no-cache-dir fastmcp manim
 
 # Copy the server file
 COPY manim_server.py .
